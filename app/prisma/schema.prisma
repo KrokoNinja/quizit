@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  username      String   @unique
+  password      String
+  isAdmin       Boolean  @default(false)
+  isTutor       Boolean  @default(false)
+  points        Int      @default(0)
+  teamId        String?
+  tutorOfCourse Course[]
+  team          Team?    @relation(fields: [teamId], references: [id])
+}
+
+model Team {
+  id     String  @id @default(cuid())
+  name   String?
+  points Int     @default(0)
+  users  User[]
+}
+
+model Question {
+  id             String   @id @default(cuid())
+  question       String
+  choice1        String
+  choice2        String
+  choice3        String
+  choice4        String?
+  choice5        String?
+  choice1Correct Boolean
+  choice2Correct Boolean
+  choice3Correct Boolean
+  choice4Correct Boolean?
+  choice5Correct Boolean?
+  createdAt      DateTime @default(now())
+  published      Boolean  @default(false)
+  courseId       String
+  course         Course   @relation(fields: [courseId], references: [id])
+}
+
+model Course {
+  id           String     @id @default(cuid())
+  name         String
+  tutorId      String
+  abbreviation String
+  tutor        User       @relation(fields: [tutorId], references: [id])
+  questions    Question[]
+}

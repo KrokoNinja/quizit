@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
+import ThemeDataProvider from "@/context/theme-data-provider";
+import Header from "@/components/Header";
+import prisma from "@/lib/db";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,9 +18,22 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.className} h-screen`}>
+        <NextThemesProvider
+          attribute="class"
+          defaultTheme="dark"
+          disableTransitionOnChange
+          enableSystem
+        >
+          <ThemeDataProvider>
+            <Header />
+            <main className="h-full pt-24 px-6">{children}</main>
+          </ThemeDataProvider>
+        </NextThemesProvider>
+      </body>
     </html>
   );
 }
