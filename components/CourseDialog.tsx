@@ -1,9 +1,11 @@
+"use client"
 import type { Course } from "@prisma/client"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog"
 import { Button } from "./ui/button"
 import CourseForm from "./CourseForm"
 import { getSession } from "@/lib/actions"
 import { notFound } from "next/navigation"
+import { useEffect, useState } from "react"
 
 
 interface CourseDialogProps {
@@ -13,16 +15,25 @@ interface CourseDialogProps {
   course?: Course
 }
 
-const CourseDialog = async ({triggerText, title, description, course} : CourseDialogProps) => {
+const CourseDialog = ({triggerText, title, description, course} : CourseDialogProps) => {
 
-  const session = await getSession();
+  const [user, setUser] = useState<string>("");
+  const [open, setOpen] = useState<boolean>(false);
 
-  if(!session.userId) {
-    return notFound();
-  }
+  useEffect(() => {
+    const checkSession = async () => {
+      const session = await getSession();
+
+      if(!session.userId) {
+        return notFound();
+      }
+      setUser(session.userId);
+    }
+    checkSession();
+  })
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={() => setOpen(!open)}>
       <DialogTrigger>
         <Button>{triggerText}</Button>
       </DialogTrigger>
@@ -31,7 +42,7 @@ const CourseDialog = async ({triggerText, title, description, course} : CourseDi
         <DialogTitle>{title}</DialogTitle>
         <DialogDescription>{description}</DialogDescription>
       </DialogHeader>
-      <CourseForm course={course} user={session.userId} />
+      <CourseForm course={course} user={user} setOpen={setOpen} />
       </DialogContent>
     </Dialog>
   )

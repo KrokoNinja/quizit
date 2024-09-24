@@ -11,9 +11,10 @@ import { Button } from "./ui/button"
 interface CourseFormProps {
   user: string
   course?: Course
+  setOpen: (open: boolean) => void
 }
 
-const CourseForm = ({user, course}: CourseFormProps) => {
+const CourseForm = ({user, course, setOpen}: CourseFormProps) => {
 
   const [name, setName] = useState(course?.name || "");
   const [abbreviation, setAbbreviation] = useState(course?.abbreviation || "");
@@ -33,10 +34,10 @@ const CourseForm = ({user, course}: CourseFormProps) => {
         <Input id="abbreviation" name="abbreviation" type="text" value={abbreviation} onChange={(e) => setAbbreviation(e.target.value)} />
         <input type="hidden" name="tutor" value={user} />
         <DialogFooter>
-          <Button type="submit">Continue</Button>
+          <Button type="submit" onClick={() => state && !state.error && setOpen(false)}>Continue</Button>
         </DialogFooter>
       </form>
-      {state.error && <p>{state.error}</p>}
+      {state && state.error && <p>{state.error}</p>}
     </>
   )
 }
