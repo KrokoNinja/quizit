@@ -11,8 +11,10 @@ import {
 import QuestionForm from "./QuestionForm"
 import { Course, Question } from "@prisma/client"
 import { useFormState } from "react-dom"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import prisma from "@/lib/db"
+import { getSession } from "@/lib/actions"
 
 type EditQuestionDialogProps = {
   triggerText: string,
@@ -34,6 +36,8 @@ const QuestionDialog = ({triggerText, title, action, course, courses, question} 
 
   const [open, setOpen] = useState(false)
   const router = useRouter()
+  const [isTutorOfCourse, setIsTutorOfCourse] = useState<boolean>(false)
+  const [questionCourse, setQuestionCourse] = useState<Course | undefined>(course || undefined)
 
   const [state, formAction] = useFormState<any, FormData>(action, {
     id: question?.id || "",
@@ -69,7 +73,7 @@ const QuestionDialog = ({triggerText, title, action, course, courses, question} 
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
           <input type="hidden" name="id" value={question?.id || ""} />
-          <QuestionForm course={course} courses={courses} question={question} />
+          <QuestionForm setCourse={setQuestionCourse} course={questionCourse} courses={courses} question={question} />
         <DialogFooter>
           <Button type="submit" onClick={()=>handleSubmit()}>Save changes</Button>
         </DialogFooter>

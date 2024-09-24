@@ -19,11 +19,27 @@ const page = async ({params}: {params: {id:string}}) => {
     }
   })
 
-  const questions = await prisma.question.findMany({
+  if (!course) {
+    return notFound();
+  }
+
+  const isTutorOfCourse = await prisma.user.findFirst({
     where: {
-      courseId: params.id
+      id: session.userId,
+      tutorOfCourse: {
+        some: {
+          id: course.id
+        }
+      }
     }
   })
+
+  const questions = await prisma.question.findMany({
+    where: {
+      courseId: course.id,
+      published: true
+    }
+    });
 
   if(!course) {
     return notFound();
@@ -34,10 +50,11 @@ const page = async ({params}: {params: {id:string}}) => {
       <div>
         <div className="flex justify-between">
           <Link href="/dashboard/courses"><Button>Back</Button></Link>
-          <Link href={`/dashboard/courses/${params.id}/quiz`}><Button>Start Quiz</Button></Link>
+          {isTutorOfCourse && <Link href="/dashboard/questions/requests"><Button>Show Requests</Button></Link>}
+          <Link href={questions.length > 0 ? `/dashboard/courses/${params.id}/quiz` : ""}><Button disabled={questions.length == 0}>Start Quiz</Button></Link>
           <QuestionDialog
-            title={session.isAdmin ? "Create question" : "Request question"}
-            triggerText={session.isAdmin ? "Create question" : "Request question"}
+            title={session.isAdmin || isTutorOfCourse ? "Create question" : "Request question"}
+            triggerText={session.isAdmin || isTutorOfCourse ? "Create question" : "Request question"}
             courses={courses}
             course={course}
             action={requestQuestion}

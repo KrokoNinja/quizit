@@ -21,7 +21,12 @@ const Page = async () => {
       <div className="flex justify-between items-center mb-6">
         <h1>All Questions</h1>
         {session.isAdmin && <Link href="/dashboard/questions/requests"><Button>Show Requests</Button></Link>}
-        <QuestionDialog title="Create question" triggerText="Create question" courses={courses} action={requestQuestion} />
+        <QuestionDialog
+          title={session.isAdmin ? "Create question" : "Request question"}
+          triggerText={session.isAdmin ? "Create question" : "Request question"}
+          courses={courses}
+          action={requestQuestion}
+        />
       </div>
       {questions.length === 0 ?
         <p>No questions found</p>

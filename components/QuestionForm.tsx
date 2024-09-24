@@ -9,9 +9,10 @@ type QuestionFormProps = {
   courses: Course[]
   course?: Course
   question?: Question
+  setCourse: (course: Course) => void
 }
 
-const QuestionForm = ({courses, course, question}: QuestionFormProps) => {
+const QuestionForm = ({setCourse, courses, course, question}: QuestionFormProps) => {
 
   const [questionText, setQuestionText] = useState<string>(question?.question || "")
   const [choice1, setChoice1] = useState<string>(question?.choice1 || "")
@@ -41,6 +42,12 @@ const QuestionForm = ({courses, course, question}: QuestionFormProps) => {
     question && question.choice5Correct && setChoice5Correct(question.choice5Correct)
   }
   , [question])
+
+  const handleCourseChange = (e: string) => {
+    const course = courses.find(course => course.id == e)
+    course && setCourse(course)
+    setCourseId(e)
+  }
 
   return (
     <>
@@ -87,7 +94,7 @@ const QuestionForm = ({courses, course, question}: QuestionFormProps) => {
         </div>
       </div>
       <Label>Course</Label>
-      <Select name="course" value={courseId} onValueChange={(e) => setCourseId(e)} required>
+      <Select name="course" value={courseId} onValueChange={(e) => handleCourseChange(e)} required>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Select a course" />
         </SelectTrigger>

@@ -23,12 +23,23 @@ const page = async ({params}: {params: {id:string}}) => {
     return notFound();
   }
 
+  const isTutor = await prisma.user.findFirst({
+    where: {
+      id: session.userId,
+      tutorOfCourse: {
+        some: {
+          id: question.courseId
+        }
+      }
+    }
+  })
+
   return (
     <div>
       <BackButton>Back</BackButton>
       <h1>Question #{question.id}</h1>
       <p>{question.question}</p>
-      {session.isAdmin &&
+      {session.isAdmin || isTutor &&
         <div>
           <p>{question.choice1}</p>
           <p>{question.choice2}</p>
@@ -38,7 +49,7 @@ const page = async ({params}: {params: {id:string}}) => {
         </div>
       }
       <p>{question.createdAt.toDateString()}</p>
-      {session.isAdmin && !question.published ? (
+      {session.isAdmin || isTutor && !question.published ? (
         <div className="flex gap-x-4">
           <form action={approveQuestion}>
             <input type="hidden" name="id" value={question.id} />
@@ -49,8 +60,13 @@ const page = async ({params}: {params: {id:string}}) => {
       ) :
         <div>
           <p>Question is published</p>
-          <QuestionDialog title="Edit question" triggerText="Edit question" action={editQuestion} question={question} courses={courses} />
-          <DeleteQuestionForm id={question.id} buttonText="Delete" />
+          {
+            session.isAdmin || isTutor &&
+            <>
+              <QuestionDialog title="Edit question" triggerText="Edit question" action={editQuestion} question={question} courses={courses} />
+              <DeleteQuestionForm id={question.id} buttonText="Delete" />
+            </>
+          }
         </div>
       }
     </div>

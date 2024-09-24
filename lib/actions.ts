@@ -200,6 +200,17 @@ export const requestQuestion = async (prevState: {error: undefined | string}, fo
 
   const session = await getSession();
 
+  const isTutor = await prisma.user.findFirst({
+    where: {
+      id: session.userId,
+      tutorOfCourse: {
+        some: {
+          id: courseId
+        }
+      }
+    }
+  });
+
   if (!choice1Correct && !choice2Correct && !choice3Correct && !choice4Correct && !choice5Correct) {
     return {
       error: "Please select at least one correct answer"
@@ -227,7 +238,7 @@ export const requestQuestion = async (prevState: {error: undefined | string}, fo
         choice4Correct,
         choice5Correct,
         courseId,
-        published: session.isAdmin
+        published: session.isAdmin || isTutor ? true : false
       }
     });
     //the revalidation only works on the courses page now
@@ -409,6 +420,14 @@ export const createTeam = async (prevState: {error: undefined | string}, formDat
             tutorId
           }
         });
+        await prisma.user.update({
+          where: {
+            id: tutorId
+          },
+          data: {
+            isTutor: true
+          }
+        })
         revalidatePath("/dashboard/courses");
         return {
           success: "Course created"

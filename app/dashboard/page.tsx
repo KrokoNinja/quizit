@@ -21,6 +21,9 @@ const page = async () => {
         <Link href={session.team ? `/dashboard/team/${session.team}` : "/dashboard/team"}>
           <DashboardButton className="px-10">{session.team ? "Manage Team" : "Join / Create Team"}</DashboardButton>
         </Link>
+        <Link href="/dashboard/leaderboard">
+          <DashboardButton className="px-10">Leaderboard</DashboardButton>
+        </Link>
       </div>
     </SinglePageWrapper>
   )

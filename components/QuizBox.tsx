@@ -9,6 +9,7 @@ import { Label } from "./ui/label";
 import { cn } from "@/lib/utils";
 import { Dialog } from "./ui/dialog";
 import ReviewQuestionDialog from "./ReviewQuestionDialog";
+import { useRouter } from "next/navigation";
 
 const QuizBox = ({courseId} : {courseId: string}) => {
 
@@ -19,6 +20,7 @@ const QuizBox = ({courseId} : {courseId: string}) => {
   const [selected, setSelected] = useState([false, false, false, false, false]);
   const [choices, setChoices] = useState<{choice: string, correct: boolean}[]>([]);
   const [isCorrect, setIsCorrect] = useState<boolean>(false);
+  const router = useRouter();
 
   useEffect(() => {
     // fetch quiz questions
@@ -82,8 +84,32 @@ const QuizBox = ({courseId} : {courseId: string}) => {
     setSelected([false, false, false, false, false]);
     setIsCorrect(false);
     setOpen(false);
+    console.log(`Questionnumber: ${questionNumber}, Questions length: ${questions.length}`);
+    if (questionNumber >= questions.length - 1) {
+      updatePoints(points);
+    }
   };
 
+  const updatePoints = async (points: number) => {
+    const response = await fetch('/api/add-points', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ points }),
+    });
+
+    if (!response.ok) {
+      const data = await response.json();
+      console.error(data.error);
+      // Handle error here, show error message to the user
+    } else {
+      const data = await response.json();
+      console.log('Points updated successfully', data);
+      // Proceed with the redirection here after points are updated
+      router.push(`/dashboard/courses/${courseId}/quiz/review`);
+    }
+  };
 
   return (
     <div>
@@ -108,6 +134,7 @@ const QuizBox = ({courseId} : {courseId: string}) => {
         <div>
           <h2>Quiz Complete</h2>
           <p>You scored {points} points</p>
+          <p>You will be redirected to the review page. Please wait for this to happen, so we can deliver your points.</p>
         </div>
         :
         <p>Loading...</p>

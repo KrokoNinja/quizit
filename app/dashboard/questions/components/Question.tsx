@@ -22,13 +22,24 @@ const Question = async ({question, className, ...props}: QuestionProps) => {
     return null;
   }
 
+  const isTutor = await prisma.user.findFirst({
+    where: {
+      id: session.userId,
+      tutorOfCourse: {
+        some: {
+          id: course.id
+        }
+      }
+    }
+  })
+
   return (
     <Link {...props} href={`/dashboard/questions/${question.id}`} className={cn("", className)}>
       <div className="bg-primary text-primary-foreground p-6 rounded-md h-full flex flex-col justify-between">
         <div>
           <h2>{question.question}</h2>
           <p>{course.name}</p>
-          {session.isAdmin &&
+          {session.isAdmin || isTutor &&
             <div>
               <p>{question.choice1}</p>
               <p>{question.choice2}</p>
