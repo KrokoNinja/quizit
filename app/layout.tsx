@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
-import ThemeDataProvider from "@/context/theme-data-provider";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
 import Header from "@/components/Header";
-import prisma from "@/lib/db";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,10 +26,8 @@ export default function RootLayout({
           disableTransitionOnChange
           enableSystem
         >
-          <ThemeDataProvider>
-            <Header />
-            <main className="h-full pt-24 px-6">{children}</main>
-          </ThemeDataProvider>
+          <Header />
+          <main className="h-full pt-24 px-6">{children}</main>
         </NextThemesProvider>
       </body>
     </html>

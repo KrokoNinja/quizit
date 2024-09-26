@@ -1,5 +1,4 @@
 import Image from "next/image"
-import { ThemeColorToggle } from "./ThemeColorToggle"
 import { ThemeModeToggle } from "./ThemeModeToggle"
 import { AspectRatio } from "./ui/aspect-ratio"
 import { Button } from "./ui/button"
@@ -24,7 +23,7 @@ const Header = async () => {
         {session.isLoggedIn ? (
           <div className="flex gap-x-6">
             <Link href="/dashboard/profile">
-              <Button>Profile</Button>
+              <Button variant="secondary">Profile</Button>
             </Link>
             <form action={logout}><Button>Logout</Button></form>
           </div>

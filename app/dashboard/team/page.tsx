@@ -1,4 +1,3 @@
-import ChatBox from '@/components/ChatBox'
 import CreateTeamDialog from '@/components/CreateTeamDialog'
 import SinglePageWrapper from '@/components/SinglePageWrapper'
 import Teams from '@/components/Teams'

@@ -1,4 +1,5 @@
 import prisma from '@/lib/db'
+import { Button } from './ui/button';
 
 const Teams = async () => {
 
@@ -6,7 +7,6 @@ const Teams = async () => {
     select: {
       id: true,
       name: true,
-      points: true,
       _count: {
         select: {users: true}
       }
@@ -20,10 +20,15 @@ const Teams = async () => {
         :
         <ul className='flex flex-col gap-6 lg:flex-row'>
           {teams.map(team => (
-            <li key={team.id} className='flex flex-col gap-2'>
-              <h2>{team.name}</h2>
-              <p>{team._count.users} members</p>
-            </li>
+            <li key={team.id} className="flex items-center justify-between p-4 bg-white shadow-md rounded-lg hover:bg-gray-100 transition-all">
+            <div>
+              <h2 className="text-lg font-semibold text-gray-800">{team.name}</h2>
+              <p className="text-sm text-gray-600">{team._count.users} / 5 members</p>
+            </div>
+            <Button className="font-semibold px-4 py-2 rounded-lg transition-all">
+              Join
+            </Button>
+          </li>
           ))}
         </ul>
       }
