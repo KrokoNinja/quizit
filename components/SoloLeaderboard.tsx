@@ -1,7 +1,6 @@
-import prisma from "@/lib/db";
+import prisma from '@/lib/db';
 
 const SoloLeaderboard = async () => {
-
   const users = await prisma.user.findMany({
     select: {
       username: true,
@@ -14,24 +13,24 @@ const SoloLeaderboard = async () => {
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full bg-white">
-        <thead className="bg-gray-800 text-white">
+      <table className="bg-tertiary/30 min-w-full">
+        <thead className="bg-secondary-gradient text-white">
           <tr>
-            <th className="py-3 px-6 text-left">Username</th>
-            <th className="py-3 px-6 text-left">Points</th>
+            <th className="px-6 py-3 text-left">Username</th>
+            <th className="px-6 py-3 text-left">Points</th>
           </tr>
         </thead>
         <tbody>
-          {users.map(user => (
-            <tr key={user.username} className="border-gray-200 hover:bg-gray-100">
-              <td className="text-black py-3 px-6">{user.username}</td>
-              <td className="text-black py-3 px-6">{user.points}</td>
+          {users.map((user) => (
+            <tr key={user.username}>
+              <td className="px-6 py-3">{user.username}</td>
+              <td className="px-6 py-3">{user.points}</td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
-  )
-}
+  );
+};
 
-export default SoloLeaderboard
+export default SoloLeaderboard;

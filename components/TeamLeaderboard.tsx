@@ -1,7 +1,6 @@
-import prisma from "@/lib/db";
+import prisma from '@/lib/db';
 
 const TeamLeaderboard = async () => {
-
   const teams = await prisma.team.findMany({
     select: {
       name: true,
@@ -14,24 +13,24 @@ const TeamLeaderboard = async () => {
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full bg-white">
-        <thead className="bg-gray-800 text-white">
+      <table className="bg-tertiary/40 min-w-full">
+        <thead className="bg-secondary-gradient text-white">
           <tr>
-            <th className="py-3 px-6 text-left">Team</th>
-            <th className="py-3 px-6 text-left">Points</th>
+            <th className="px-6 py-3 text-left">Team</th>
+            <th className="px-6 py-3 text-left">Points</th>
           </tr>
         </thead>
         <tbody>
-          {teams.map(team => (
-            <tr key={team.name} className="border-gray-200 hover:bg-gray-100">
-              <td className="text-black py-3 px-6">{team.name}</td>
-              <td className="text-black py-3 px-6">{team.points}</td>
+          {teams.map((team) => (
+            <tr key={team.name}>
+              <td className="px-6 py-3">{team.name}</td>
+              <td className="px-6 py-3">{team.points}</td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
-  )
-}
+  );
+};
 
-export default TeamLeaderboard
+export default TeamLeaderboard;

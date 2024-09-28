@@ -1,32 +1,35 @@
-import DashboardButton from "@/components/DashboardButton"
-import SinglePageWrapper from "@/components/SinglePageWrapper"
-import { getSession } from "@/lib/actions";
-import Link from "next/link"
+import DashboardButton from '@/components/DashboardButton';
+import SinglePageWrapper from '@/components/SinglePageWrapper';
+import { getSession } from '@/lib/actions';
+import Link from 'next/link';
 
 const page = async () => {
-
   const session = await getSession();
-  console.log(session.team)
+  console.log(session.team);
 
   return (
-    <SinglePageWrapper>
-      <h1>Dashboard</h1>
-      <div className="w-full flex justify-center items-center gap-6 flex-col">
+    <SinglePageWrapper className="h-full">
+      <div className="grid h-full grid-cols-1 gap-6 md:grid-cols-2 md:px-16 md:py-32 lg:px-60 lg:py-48">
         <Link href="/dashboard/questions">
-          <DashboardButton className="px-10">Browse Questions</DashboardButton>
+          <DashboardButton>Browse Questions</DashboardButton>
         </Link>
         <Link href="/dashboard/courses">
-          <DashboardButton className="px-10">Browse Courses</DashboardButton>
+          <DashboardButton>Browse Courses</DashboardButton>
         </Link>
-        <Link href={session.team ? `/dashboard/team/${session.team}` : "/dashboard/team"}>
-          <DashboardButton className="px-10">{session.team ? "Manage Team" : "Join / Create Team"}</DashboardButton>
+        <Link
+          href={
+            session.team ? `/dashboard/team/${session.team}` : '/dashboard/team'
+          }>
+          <DashboardButton>
+            {session.team ? 'Manage Team' : 'Join / Create Team'}
+          </DashboardButton>
         </Link>
         <Link href="/dashboard/leaderboard">
-          <DashboardButton className="px-10">Leaderboard</DashboardButton>
+          <DashboardButton>Leaderboard</DashboardButton>
         </Link>
       </div>
     </SinglePageWrapper>
-  )
-}
+  );
+};
 
-export default page
+export default page;

@@ -1,12 +1,15 @@
-import { cn } from "@/lib/utils"
-import { Button, ButtonProps } from "./ui/button"
+import { cn } from '@/lib/utils';
+import { Button, ButtonProps } from './ui/button';
 
-type DashboardButtonProps = ButtonProps
+type DashboardButtonProps = ButtonProps;
 
-const DashboardButton = ({className, ...props}: DashboardButtonProps) => {
+const DashboardButton = ({ className, ...props }: DashboardButtonProps) => {
   return (
-    <Button {...props} className={cn("py-10", className)} />
-  )
-}
+    <Button
+      {...props}
+      className={cn('h-full w-full py-10 text-xl font-bold', className)}
+    />
+  );
+};
 
-export default DashboardButton
+export default DashboardButton;
