@@ -18,7 +18,7 @@ const DeleteQuestionForm = ({id, buttonText}: {id: string, buttonText: string}) 
   return (
     <form action={formAction}>
       <input type="hidden" name="id" value={id} />
-      <Button type="submit">{buttonText}</Button>
+      <Button variant="destructive" type="submit">{buttonText}</Button>
       {state.error && <p>{state.error}</p>}
     </form>
   )

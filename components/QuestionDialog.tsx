@@ -36,7 +36,6 @@ const QuestionDialog = ({triggerText, title, action, course, courses, question} 
 
   const [open, setOpen] = useState(false)
   const router = useRouter()
-  const [isTutorOfCourse, setIsTutorOfCourse] = useState<boolean>(false)
   const [questionCourse, setQuestionCourse] = useState<Course | undefined>(course || undefined)
 
   const [state, formAction] = useFormState<any, FormData>(action, {
