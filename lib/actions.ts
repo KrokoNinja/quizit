@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 import { validateEmail, validatePassword } from "./helpers";
 import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
-import { User } from "@prisma/client";
+import { Team, User } from "@prisma/client";
 
 export const getSession = async () => {
   const session = await getIronSession<SessionData>(cookies(), sessionOptions);
@@ -438,3 +438,48 @@ export const createTeam = async (prevState: {error: undefined | string}, formDat
         }
       }
     }
+
+export const joinTeam = async (teamId: string, userId: string) => {
+  const session = await getSession();
+  const team = await prisma.team.findFirst({
+    where: {
+      id: teamId
+    },
+    select: {
+      _count: {
+        select: {
+          users: true
+        }
+      },
+    }
+  });
+
+  if(!team) {
+    return {
+      error: "Team does not exist"
+    }
+  }
+
+  if(team._count.users >= 5) {
+    return {
+      error: "Team is full"
+    }
+  }
+
+  await prisma.user.update({
+    where: {
+      id: userId
+    },
+    data: {
+      teamId
+    }
+  });
+
+  session.team = teamId;
+  await session.save();
+  revalidatePath(`/dashboard/team/`);
+
+  return {
+    success: "Joined team"
+  }
+}

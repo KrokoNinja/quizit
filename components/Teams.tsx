@@ -1,17 +1,21 @@
-import prisma from '@/lib/db'
+"use client"
+
+import { IronSession } from 'iron-session';
 import { Button } from './ui/button';
+import { joinTeam } from '@/lib/actions';
+import { SessionData } from '@/lib/utils';
+import Link from 'next/link';
 
-const Teams = async () => {
+interface TeamsProps {
+  teams: { id: string; name: string | null; _count: { users: number; }; }[],
+  session: IronSession<SessionData>
+}
 
-  const teams = await prisma.team.findMany({
-    select: {
-      id: true,
-      name: true,
-      _count: {
-        select: {users: true}
-      }
-      }
-    });
+const Teams = ({teams, session}: TeamsProps) => {
+
+  if (!session.userId) {
+    return <p>You need to be logged in to join a team.</p>
+  }
 
   return (
     <>
@@ -20,14 +24,19 @@ const Teams = async () => {
         :
         <ul className='flex flex-col gap-6 lg:flex-row'>
           {teams.map(team => (
-            <li key={team.id} className="flex items-center justify-between p-4 bg-white shadow-md rounded-lg hover:bg-gray-100 transition-all">
+            <li key={team.id} className="flex items-center justify-between p-4 bg-white shadow-md rounded-lg hover:bg-gray-100 transition-all gap-6">
             <div>
               <h2 className="text-lg font-semibold text-gray-800">{team.name}</h2>
               <p className="text-sm text-gray-600">{team._count.users} / 5 members</p>
             </div>
-            <Button className="font-semibold px-4 py-2 rounded-lg transition-all">
-              Join
-            </Button>
+            {
+              session.team === team.id ?
+                <Link href={`/dashboard/team/${team.id}`}><Button variant="secondary">Go to Team page</Button></Link>
+              :
+                <Button disabled={team._count.users >= 5} variant="secondary" onClick={() => joinTeam(team.id, session.userId!)}>
+                  Join
+                </Button>
+            }
           </li>
           ))}
         </ul>

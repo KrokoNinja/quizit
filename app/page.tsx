@@ -13,7 +13,7 @@ export default async function Home() {
         </AspectRatio>
       </div>
       <h1 className='text-primary'>QuizIT – People love IT</h1>
-      <Link href="/signup"><Button>Get Started</Button></Link>
+      <Link href="/signup"><Button variant="tertiary">Get Started</Button></Link>
     </div>
   );
 }

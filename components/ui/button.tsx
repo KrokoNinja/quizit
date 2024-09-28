@@ -15,7 +15,7 @@ const buttonVariants = cva(
         outline:
           "border border-zinc-800 bg-background hover:bg-zinc-100 hover:text-zinc-900 dark:border-zinc-400 dark:bg-background dark:hover:bg-zinc-800 dark:hover:text-zinc-50",
         secondary:
-          "bg-secondary-gradient text-zinc-900 hover:bg-secondary-gradient/80 dark:bg-zinc-800 dark:text-zinc-50 dark:hover:bg-zinc-800/80",
+          "bg-secondary-gradient border border-transparent text-zinc-900 hover:bg-secondary-gradient/80 dark:bg-zinc-800 dark:text-zinc-50 hover:ring",
         tertiary:
         "bg-tertiary-gradient text-zinc-900 hover:bg-tertiary-gradient/80 dark:bg-zinc-800 dark:text-zinc-50 dark:hover:bg-zinc-800/80",
         ghost: "hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-800 dark:hover:text-zinc-50",
