@@ -21,9 +21,9 @@ model User {
 }
 
 model Team {
-  id     String  @id @default(cuid())
-  name   String?
-  points Int     @default(0)
+  id     String @id @default(cuid())
+  name   String
+  points Int    @default(0)
   users  User[]
 }
 
