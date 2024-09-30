@@ -3,13 +3,8 @@ import CreateQuestionForm from '@/components/CreateQuestionForm';
 import SinglePageWrapper from '@/components/SinglePageWrapper';
 import { getSession } from '@/lib/actions';
 import prisma from '@/lib/db';
-import type { Course } from '@prisma/client';
 
-interface RequestPageProps {
-  course?: Course;
-}
-
-const Page = async ({ course }: RequestPageProps) => {
+const Page = async () => {
   const courses = await prisma.course.findMany();
   const session = await getSession();
 
