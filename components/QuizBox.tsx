@@ -39,6 +39,7 @@ const QuizBox = ({ courseId, isTeamQuiz, params }: QuizBoxProps) => {
         socket.emit('joinRoom', { roomId: params!.id });
       });
     }
+    //TODO Docker
     // fetch quiz questions
     const fetchQuestions = async () => {
       const questions = await getQuizQuestions(courseId);
