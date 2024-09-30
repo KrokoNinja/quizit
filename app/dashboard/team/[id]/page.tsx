@@ -1,12 +1,12 @@
-import SinglePageWrapper from "@/components/SinglePageWrapper"
+import SinglePageWrapper from '@/components/SinglePageWrapper';
+import TeamInfo from '@/components/TeamInfo';
 
-const page = ({params} : {params: {id: string}}) => {
+const page = ({ params }: { params: { id: string } }) => {
   return (
     <SinglePageWrapper>
-      <h1>Team Page</h1>
-      <p>Team ID: {params.id}</p>
+      <TeamInfo id={params.id} />
     </SinglePageWrapper>
-  )
-}
+  );
+};
 
-export default page
+export default page;

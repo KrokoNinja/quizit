@@ -61,7 +61,7 @@ const config = {
         'secondary-gradient':
           'linear-gradient(90deg, hsl(var(--purple)), hsl(var(--blue)) 100%)',
         'tertiary-gradient':
-          'linear-gradient(90deg,hsl(var(--foreground)), hsl(var(--green)), hsl(var(--foreground)))',
+          'linear-gradient(90deg, hsl(var(--green)) 40%, hsl(var(--foreground)))',
       },
       borderRadius: {
         lg: 'var(--radius)',

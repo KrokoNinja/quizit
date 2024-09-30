@@ -1,15 +1,14 @@
-import QuizBox from "@/components/QuizBox"
-import SinglePageWrapper from "@/components/SinglePageWrapper"
-import prisma from "@/lib/db"
-import { notFound } from "next/navigation"
+import QuizBox from '@/components/QuizBox';
+import SinglePageWrapper from '@/components/SinglePageWrapper';
+import prisma from '@/lib/db';
+import { notFound } from 'next/navigation';
 
-const page = async ({ params } : {params: {id: string}}) => {
-
+const page = async ({ params }: { params: { id: string } }) => {
   const questions = await prisma.question.findMany({
     where: {
       courseId: params.id,
-      published: true
-    }
+      published: true,
+    },
   });
 
   if (questions.length === 0) {
@@ -17,13 +16,10 @@ const page = async ({ params } : {params: {id: string}}) => {
   }
 
   return (
-    <SinglePageWrapper>
-      <h1>Quiz</h1>
-      <div>
-        <QuizBox courseId={params.id} />
-      </div>
+    <SinglePageWrapper className="h-full">
+      <QuizBox courseId={params.id} />
     </SinglePageWrapper>
-  )
-}
+  );
+};
 
-export default page
+export default page;

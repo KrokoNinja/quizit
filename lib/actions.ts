@@ -9,6 +9,8 @@ import { validateEmail, validatePassword } from './helpers';
 import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
 import { Team, User } from '@prisma/client';
+import { Router } from 'next/router';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 export const getSession = async () => {
   const session = await getIronSession<SessionData>(cookies(), sessionOptions);
@@ -145,6 +147,8 @@ export const updateUsername = async (
         username,
       },
     });
+    session.username = username;
+    session.save();
     return {
       state: 'Username updated',
     };
@@ -511,4 +515,23 @@ export const joinTeam = async (teamId: string, userId: string) => {
   return {
     success: 'Joined team',
   };
+};
+
+export const getTeam = async (teamId: string) => {
+  const team = await prisma.team.findFirst({
+    where: {
+      id: teamId,
+    },
+    include: {
+      users: {
+        select: {
+          username: true,
+          isAdmin: true,
+          isTutor: true,
+        },
+      },
+    },
+  });
+
+  return team;
 };

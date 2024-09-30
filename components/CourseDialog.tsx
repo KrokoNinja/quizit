@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from './ui/dialog';
-import { Button } from './ui/button';
+import { Button, buttonVariants } from './ui/button';
 import CourseForm from './CourseForm';
 import { getSession } from '@/lib/actions';
 import { notFound } from 'next/navigation';
@@ -44,9 +44,7 @@ const CourseDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={() => setOpen(!open)}>
-      <DialogTrigger>
-        <Button>{triggerText}</Button>
-      </DialogTrigger>
+      <DialogTrigger className={buttonVariants()}>{triggerText}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
