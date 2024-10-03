@@ -17,6 +17,8 @@ RUN npx prisma generate
 
 ENV NODE_ENV=production
 
+ENV ROOT_URL=http://quizit.lennertpfundtner.de
+
 RUN npm run build
 
 EXPOSE 3000
