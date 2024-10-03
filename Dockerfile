@@ -8,14 +8,12 @@ RUN npm install
 
 COPY . .
 
-ARG DATABASE_URL=file:/app/prisma/dev.db
+ARG DATABASE_URL=file:/app/app/prisma/dev.db
 ENV DATABASE_URL=$DATABASE_URL
 
-RUN chmod 777 /app/prisma/dev.db || true
+RUN chmod 777 /app/app/prisma/dev.db || true
 
 RUN npx prisma generate
-
-RUN npx prisma migrate dev
 
 ENV NODE_ENV=production
 

@@ -12,7 +12,7 @@ interface TeamReadyStateProps {
   user: string;
 }
 
-const socket = io('http://localhost:4000');
+const socket = io('http://localhost:5432');
 
 const TeamReadyState = ({ team, user }: TeamReadyStateProps) => {
   const [socketId, setSocketId] = useState<string | undefined>(undefined);

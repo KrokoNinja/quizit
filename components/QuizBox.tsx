@@ -18,7 +18,7 @@ interface QuizBoxProps {
   params?: { id: string };
 }
 
-const socket = io('http://localhost:4000');
+const socket = io('http://localhost:5432');
 
 const QuizBox = ({ courseId, isTeamQuiz, params }: QuizBoxProps) => {
   const [open, setOpen] = useState<boolean>(false);

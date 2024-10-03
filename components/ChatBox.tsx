@@ -14,7 +14,7 @@ interface ChatBoxProps {
   roomId?: string;
 }
 
-const socket = io('http://localhost:4000');
+const socket = io('http://localhost:5432');
 
 const ChatBox = ({ username, roomId }: ChatBoxProps) => {
   const [message, setMessage] = useState('');
