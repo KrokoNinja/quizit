@@ -41,7 +41,7 @@ const TeamReadyState = ({ team, user }: TeamReadyStateProps) => {
         router.push(`/dashboard/team/${team.id}/room/quiz`);
       setUsersReady(data.usersReady);
     });
-  }, [team.id]);
+  });
 
   const setReady = () => {
     const newUsersReady = { ...usersReady, [user]: !usersReady[user] };

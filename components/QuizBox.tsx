@@ -45,7 +45,7 @@ const QuizBox = ({ courseId, isTeamQuiz, params }: QuizBoxProps) => {
       setQuestions(questions);
     };
     fetchQuestions();
-  }, [courseId]);
+  });
 
   useEffect(() => {
     if (questionNumber < questions.length) {
