@@ -17,7 +17,7 @@ RUN npx prisma generate
 
 ENV NODE_ENV=production
 
-ENV ROOT_URL=http://quizit.lennertpfundtner.de
+ENV ROOT_URL=https://quizit.lennertpfundtner.de
 
 RUN npm run build
 
