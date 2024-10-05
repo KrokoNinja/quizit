@@ -8,9 +8,6 @@ import { redirect } from 'next/navigation';
 import { validateEmail, validatePassword } from './helpers';
 import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
-import { Team, User } from '@prisma/client';
-import { Router } from 'next/router';
-import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 export const getSession = async () => {
   const session = await getIronSession<SessionData>(cookies(), sessionOptions);
@@ -43,7 +40,7 @@ export const login = async (
     };
   }
 
-  const isCorrectPassword = bcrypt.compareSync(password, user.password);
+  const isCorrectPassword = password === user.password;
 
   if (!isCorrectPassword) {
     return {
@@ -93,14 +90,13 @@ export const signup = async (
     };
   }
 
-  const passwordHash = bcrypt.hashSync(password, 8);
   const adminMails = process.env.ADMIN_EMAILS!.split(',');
   const isAdmin = adminMails.includes(email);
 
   const user = await prisma.user.create({
     data: {
       email,
-      password: passwordHash,
+      password: password,
       username: Math.random().toString(36).substring(7),
     },
   });
