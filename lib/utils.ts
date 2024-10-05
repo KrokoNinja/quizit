@@ -1,9 +1,9 @@
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
-import { SessionOptions } from "iron-session"
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+import { SessionOptions } from 'iron-session';
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 export interface SessionData {
@@ -17,14 +17,13 @@ export interface SessionData {
 }
 
 export const defaultSession: SessionData = {
-  isLoggedIn: false
-}
+  isLoggedIn: false,
+};
 
 export const sessionOptions: SessionOptions = {
-  password: process.env.SESSION_SECRET!,
-  cookieName: "session",
+  password: 'ajIfjKXGMYEB9gJkMCX2iyPVMDu9BlrBlGn2HcWXm8',
+  cookieName: 'session',
   cookieOptions: {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-  }
-}
+  },
+};
