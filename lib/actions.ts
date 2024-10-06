@@ -62,7 +62,8 @@ export const login = async (
 export const logout = async () => {
   const session = await getSession();
   session.destroy();
-  return NextResponse.redirect(`${process.env.ROOT_URL}/login`);
+  redirect(`${process.env.ROOT_URL}/login`);
+  return NextResponse.json({ success: 'Logged out' });
 };
 
 export const signup = async (
