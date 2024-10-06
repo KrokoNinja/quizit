@@ -23,7 +23,4 @@ export const defaultSession: SessionData = {
 export const sessionOptions: SessionOptions = {
   password: 'ajIfjKXGMYEB9gJkMCX2iyPVMDu9BlrBlGn2HcWXm8',
   cookieName: 'session',
-  cookieOptions: {
-    httpOnly: true,
-  },
 };
