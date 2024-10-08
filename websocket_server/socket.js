@@ -20,10 +20,18 @@ io.on('connection', async (socket) => {
   });
 
   socket.on('setReady', (data) => {
-    console.log('Ready', data);
     socket
       .to(data.roomId)
-      .emit('someoneReady', { usersReady: data.usersReady });
+      .emit('someoneReady', {
+        usersReady: data.usersReady,
+        course: data.course,
+      });
+  });
+
+  socket.on('setCourse', (data) => {
+    socket
+      .to(data.roomId)
+      .emit('courseChange', { courseData: data.courseData });
   });
 });
 

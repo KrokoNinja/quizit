@@ -22,7 +22,11 @@ const page = () => {
     } else {
       setPoints(parseInt(savedPoints));
     }
-  }, []);
+  });
+
+  const resetLocalStoragePoints = () => {
+    localStorage.removeItem('points');
+  };
 
   return (
     <SinglePageWrapper className="flex h-full flex-col items-center">
@@ -34,13 +38,19 @@ const page = () => {
             {points && points > 1 ? 'points' : 'point'}
           </p>
           <Link href={getQuizURL()}>
-            <Button>Start another quiz</Button>
+            <Button onClick={() => resetLocalStoragePoints()}>
+              Start another quiz
+            </Button>
           </Link>
           <Link href="/dashboard/leaderboard">
-            <Button>See the leaderboard</Button>
+            <Button onClick={() => resetLocalStoragePoints()}>
+              See the leaderboard
+            </Button>
           </Link>
           <Link href="/dashboard">
-            <Button>Back to the dashboard</Button>
+            <Button onClick={() => resetLocalStoragePoints()}>
+              Back to the dashboard
+            </Button>
           </Link>
         </div>
         <Image

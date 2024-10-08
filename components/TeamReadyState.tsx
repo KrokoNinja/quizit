@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import { Button } from './ui/button';
 import { redirect, useRouter } from 'next/navigation';
+import CourseSelect from './CourseSelect';
 
 interface TeamReadyStateProps {
   team: {
@@ -16,6 +17,7 @@ const socket = io('http://localhost:5432');
 
 const TeamReadyState = ({ team, user }: TeamReadyStateProps) => {
   const [socketId, setSocketId] = useState<string | undefined>(undefined);
+  const [course, setCourse] = useState<string | null>(null);
   const [usersReady, setUsersReady] = useState<{ [key: string]: boolean }>(
     team.users.reduce(
       (acc, user) => {
@@ -35,24 +37,48 @@ const TeamReadyState = ({ team, user }: TeamReadyStateProps) => {
     socket.emit('joinRoom', { roomId: team.id });
 
     socket.on('someoneReady', (data) => {
-      console.log('Someone ready', data);
       //if all users are ready, redirect to quiz page
-      Object.values(data.usersReady).every((ready) => ready) &&
-        router.push(`/dashboard/team/${team.id}/room/quiz`);
+      if (data.course) {
+        localStorage.setItem('course', data.course);
+        Object.values(data.usersReady).every((ready) => ready) &&
+          router.push(`/dashboard/team/${team.id}/room/quiz`);
+      }
       setUsersReady(data.usersReady);
     });
-  });
+
+    socket.on('courseChange', (data) => {
+      setCourse(data.courseData);
+    });
+
+    return () => {
+      socket.off('someoneReady');
+      socket.off('courseChange');
+      socket.off('connect');
+    };
+  }, [team.id, router]);
+
+  useEffect(() => {
+    socket.emit('setCourse', { courseData: course, roomId: team.id });
+  }, [course]);
 
   const setReady = () => {
     const newUsersReady = { ...usersReady, [user]: !usersReady[user] };
-    socket.emit('setReady', { usersReady: newUsersReady, roomId: team.id });
+    socket.emit('setReady', {
+      usersReady: newUsersReady,
+      roomId: team.id,
+      course: course,
+    });
     setUsersReady(newUsersReady);
-    Object.values(newUsersReady).every((ready) => ready) &&
-      router.push(`/dashboard/team/${team.id}/room/quiz`);
+    if (course) {
+      localStorage.setItem('course', course);
+      Object.values(newUsersReady).every((ready) => ready) &&
+        router.push(`/dashboard/team/${team.id}/room/quiz`);
+    }
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
+      <CourseSelect course={course} setCourse={setCourse} />
       <ul className="mb-4 flex flex-col gap-2">
         {team.users.map((user) => (
           <li
@@ -62,8 +88,11 @@ const TeamReadyState = ({ team, user }: TeamReadyStateProps) => {
           </li>
         ))}
       </ul>
-      <Button className="cursor-pointer" onClick={() => setReady()}>
-        Ready
+      <Button
+        disabled={!course}
+        className="cursor-pointer"
+        onClick={() => setReady()}>
+        {course ? 'Ready' : 'Select a course'}
       </Button>
     </div>
   );
