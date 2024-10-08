@@ -137,6 +137,7 @@ const QuizBox = ({ courseId, isTeamQuiz, params }: QuizBoxProps) => {
     } else {
       const data = await response.json();
       console.log('Points updated successfully', data);
+      localStorage.setItem('points', points.toString());
       // Proceed with the redirection after points are updated
       router.push(`/dashboard/courses/${courseId}/quiz/review`);
     }

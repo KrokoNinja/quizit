@@ -42,7 +42,7 @@ const QuestionFormItem = ({
           type="text"
           name={`choice${number}`}
           placeholder="Enter choice 2"
-          required
+          required={required}
           value={choice}
           onChange={(e) => setChoice(e.target.value)}
         />
