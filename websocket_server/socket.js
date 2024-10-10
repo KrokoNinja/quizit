@@ -6,6 +6,7 @@ const io = new Server(httpServer, {
   cors: {
     origin: '*',
     methods: ['GET', 'POST'],
+    credentials: false,
   },
 });
 
@@ -20,18 +21,21 @@ io.on('connection', async (socket) => {
   });
 
   socket.on('setReady', (data) => {
-    socket
-      .to(data.roomId)
-      .emit('someoneReady', {
-        usersReady: data.usersReady,
-        course: data.course,
-      });
+    socket.to(data.roomId).emit('someoneReady', {
+      usersReady: data.usersReady,
+      course: data.course,
+    });
   });
 
   socket.on('setCourse', (data) => {
     socket
       .to(data.roomId)
       .emit('courseChange', { courseData: data.courseData });
+  });
+
+  socket.on('getQuestions', (data) => {
+    console.log(data);
+    socket.to(data.roomId).emit('receiveQuestions', data);
   });
 });
 

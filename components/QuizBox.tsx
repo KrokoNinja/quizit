@@ -37,14 +37,19 @@ const QuizBox = ({ courseId, isTeamQuiz, params }: QuizBoxProps) => {
       socket.on('connect', () => {
         console.log(socket.id);
         socket.emit('joinRoom', { roomId: params!.id });
+        socket.emit('getQuestions', {
+          roomId: params!.id,
+          questions: getQuizQuestions(courseId),
+        });
       });
+    } else {
+      // fetch quiz questions
+      const fetchQuestions = async () => {
+        const questions = await getQuizQuestions(courseId);
+        setQuestions(questions);
+      };
+      fetchQuestions();
     }
-    // fetch quiz questions
-    const fetchQuestions = async () => {
-      const questions = await getQuizQuestions(courseId);
-      setQuestions(questions);
-    };
-    fetchQuestions();
   }, [isTeamQuiz, params, courseId]);
 
   useEffect(() => {

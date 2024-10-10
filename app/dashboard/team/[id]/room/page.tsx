@@ -19,7 +19,9 @@ const page = async ({ params }: { params: { id: string } }) => {
   return (
     <SinglePageWrapper className="flex flex-col gap-10">
       <TeamReadyState team={team} user={session.username} />
-      <ChatBox username={session.username} roomId={team.id} />
+      {
+        //<ChatBox username={session.username} roomId={team.id} />
+      }
     </SinglePageWrapper>
   );
 };

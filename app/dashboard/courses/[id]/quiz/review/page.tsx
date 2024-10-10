@@ -1,28 +1,16 @@
 'use client';
+import ReviewPoints from '@/components/ReviewPoints';
 import SinglePageWrapper from '@/components/SinglePageWrapper';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import { useEffect, useState } from 'react';
 
 const page = () => {
-  const [points, setPoints] = useState<number | null>(null);
-
   const getQuizURL = () => {
     const url = window.location.href;
     const parts = url.split('/review');
     return parts[0];
   };
-
-  useEffect(() => {
-    const savedPoints = localStorage.getItem('points');
-    if (!savedPoints) {
-      notFound();
-    } else {
-      setPoints(parseInt(savedPoints));
-    }
-  });
 
   const resetLocalStoragePoints = () => {
     localStorage.removeItem('points');
@@ -33,10 +21,7 @@ const page = () => {
       <h1 className="text-3xl">Review</h1>
       <div className="flex h-full items-center">
         <div className="flex flex-1 flex-col justify-start gap-4">
-          <p className="text-lg">
-            You finished the Quiz with {points}{' '}
-            {points && points > 1 ? 'points' : 'point'}
-          </p>
+          <ReviewPoints />
           <Link href={getQuizURL()}>
             <Button onClick={() => resetLocalStoragePoints()}>
               Start another quiz

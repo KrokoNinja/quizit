@@ -15,7 +15,7 @@ const TeamQuizBox = () => {
       setCourse(course);
       setLoading(false);
     }
-  });
+  }, []);
 
   useEffect(() => {
     if (!loading && course === null) {

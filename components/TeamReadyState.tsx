@@ -59,7 +59,7 @@ const TeamReadyState = ({ team, user }: TeamReadyStateProps) => {
 
   useEffect(() => {
     socket.emit('setCourse', { courseData: course, roomId: team.id });
-  }, [course]);
+  }, [course, team.id]);
 
   const setReady = () => {
     const newUsersReady = { ...usersReady, [user]: !usersReady[user] };
