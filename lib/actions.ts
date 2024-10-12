@@ -2,12 +2,10 @@
 import { getIronSession } from 'iron-session';
 import { defaultSession, SessionData, sessionOptions } from './utils';
 import { cookies } from 'next/headers';
-import bcrypt from 'bcryptjs';
 import prisma from './db';
 import { redirect } from 'next/navigation';
 import { validateEmail, validatePassword } from './helpers';
 import { revalidatePath } from 'next/cache';
-import { NextResponse } from 'next/server';
 
 export const getSession = async () => {
   const session = await getIronSession<SessionData>(cookies(), sessionOptions);
@@ -90,8 +88,13 @@ export const signup = async (
     };
   }
 
-  const adminMails = process.env.ADMIN_EMAILS!.split(',');
-  const isAdmin = adminMails.includes(email);
+  let isAdmin = false;
+  let adminMails: string[] = [];
+
+  if (process.env.ADMIN_EMAILS) {
+    adminMails = process.env.ADMIN_EMAILS!.split(',');
+    isAdmin = adminMails.includes(email);
+  }
 
   const user = await prisma.user.create({
     data: {
