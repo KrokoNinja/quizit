@@ -1,7 +1,7 @@
 'use client';
 import { Input } from '@/components/ui/input';
 import React, { useEffect, useState } from 'react';
-import io from 'socket.io-client';
+import { socket } from '../socket';
 import Message from './Message';
 
 type Message = {
@@ -13,8 +13,6 @@ interface ChatBoxProps {
   username: string;
   roomId?: string;
 }
-
-const socket = io('http://localhost:5432');
 
 const ChatBox = ({ username, roomId }: ChatBoxProps) => {
   const [message, setMessage] = useState('');

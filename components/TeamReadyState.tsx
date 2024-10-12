@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
+import { socket } from '../socket';
 import { Button } from './ui/button';
 import { redirect, useRouter } from 'next/navigation';
 import CourseSelect from './CourseSelect';
@@ -12,8 +12,6 @@ interface TeamReadyStateProps {
   } & { id: string; name: string | null; points: number };
   user: string;
 }
-
-const socket = io('http://localhost:5432');
 
 const TeamReadyState = ({ team, user }: TeamReadyStateProps) => {
   const [socketId, setSocketId] = useState<string | undefined>(undefined);
