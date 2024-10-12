@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "node server.js",
     "build": "next build",
-    "start": "next start",
+    "start": "node server.js",
     "lint": "next lint",
     "test": "jest",
     "test:watch": "jest --watch",
