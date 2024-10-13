@@ -10,15 +10,13 @@ import { cn } from '@/lib/utils';
 import { Dialog } from './ui/dialog';
 import ReviewQuestionDialog from './ReviewQuestionDialog';
 import { useRouter } from 'next/navigation';
-import { io } from 'socket.io-client';
+import { socket } from '../socket';
 
 interface QuizBoxProps {
   courseId: string;
   isTeamQuiz?: boolean;
   params?: { id: string };
 }
-
-const socket = io('http://localhost:5432');
 
 const QuizBox = ({ courseId, isTeamQuiz, params }: QuizBoxProps) => {
   const [open, setOpen] = useState<boolean>(false);

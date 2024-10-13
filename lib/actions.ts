@@ -34,7 +34,7 @@ export const login = async (
 
   if (!user) {
     return {
-      error: 'Invalid credentials',
+      error: 'No user found in database. Please sign up.',
     };
   }
 
@@ -70,9 +70,14 @@ export const signup = async (
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
 
-  if (!validateEmail(email) || !validatePassword(password)) {
+  if (!validateEmail(email)) {
     return {
-      error: 'Invalid email or password',
+      error: 'Invalid email',
+    };
+  } else if (!validatePassword(password)) {
+    return {
+      error:
+        'Password must be at least 8 characters long, contain a number, a lowercase letter, an uppercase letter and a special character',
     };
   }
 

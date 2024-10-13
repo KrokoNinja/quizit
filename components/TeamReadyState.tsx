@@ -38,8 +38,13 @@ const TeamReadyState = ({ team, user }: TeamReadyStateProps) => {
       //if all users are ready, redirect to quiz page
       if (data.course) {
         localStorage.setItem('course', data.course);
-        Object.values(data.usersReady).every((ready) => ready) &&
+        const readyUsersCount = Object.values(data.usersReady).filter(
+          (ready) => ready,
+        ).length;
+
+        if (readyUsersCount >= 2) {
           router.push(`/dashboard/team/${team.id}/room/quiz`);
+        }
       }
       setUsersReady(data.usersReady);
     });
@@ -69,8 +74,13 @@ const TeamReadyState = ({ team, user }: TeamReadyStateProps) => {
     setUsersReady(newUsersReady);
     if (course) {
       localStorage.setItem('course', course);
-      Object.values(newUsersReady).every((ready) => ready) &&
+      const readyUsersCount = Object.values(newUsersReady).filter(
+        (ready) => ready,
+      ).length;
+
+      if (readyUsersCount >= 2) {
         router.push(`/dashboard/team/${team.id}/room/quiz`);
+      }
     }
   };
 
