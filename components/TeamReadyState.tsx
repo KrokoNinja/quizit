@@ -96,12 +96,25 @@ const TeamReadyState = ({ team, user }: TeamReadyStateProps) => {
           </li>
         ))}
       </ul>
-      <Button
-        disabled={!course}
-        className="cursor-pointer"
-        onClick={() => setReady()}>
-        {course ? 'Ready' : 'Select a course'}
-      </Button>
+      {/* Two buttons to get the onClick working on mobile */}
+      <div className='hidden md:block'>
+        <Button
+          disabled={!course}
+          className="cursor-pointer w-1/2"
+          onClick={() => setReady()}
+        >
+          {course ? 'Ready' : 'Select a course'}
+        </Button>
+      </div>
+      <div className='block md:hidden'>
+        <Button
+          disabled={!course}
+          className="cursor-pointer"
+          onTouchStart={() => setReady()}
+        >
+          {course ? 'Ready' : 'Select a course'}
+        </Button>
+      </div>
     </div>
   );
 };
