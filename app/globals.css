@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 @layer base {
   :root {
     --background: 0 0% 89%;
@@ -70,5 +71,9 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  .h-body {
+    height: calc(100vh - 6.3rem);
   }
 }

@@ -9,7 +9,7 @@ const Header = async () => {
   const session = await getSession();
 
   return (
-    <header className="h-22 fixed flex w-full items-center justify-between bg-background p-6">
+    <header className="h-24 fixed flex w-full items-center justify-between bg-background p-6">
       <Link href={session.isLoggedIn ? '/dashboard' : '/'}>
         <div className="w-10">
           <AspectRatio ratio={238 / 261}>

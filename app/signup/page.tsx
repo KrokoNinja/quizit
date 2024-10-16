@@ -1,4 +1,5 @@
 "use client"
+import SinglePageWrapper from "@/components/SinglePageWrapper"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -10,9 +11,9 @@ const Page = () => {
   const [state, formAction] = useFormState<any, FormData>(signup, "");
 
   return (
-    <div className="flex flex-col items-center justify-center h-full">
+    <SinglePageWrapper className="flex flex-col items-center justify-center h-full">
       <h1>SignUp</h1>
-      <form action={formAction} className="w-1/2">
+      <form action={formAction} className="md:w-1/2">
         <Label htmlFor="email">Email</Label>
         <Input type="email" name="email" id="email" />
         <Label htmlFor="password">Password</Label>
@@ -20,7 +21,7 @@ const Page = () => {
         <Button type="submit">SignUp</Button>
       </form>
       {state?.error && <p>{state.error}</p>}
-    </div>
+    </SinglePageWrapper>
   )
 }
 

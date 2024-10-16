@@ -32,7 +32,7 @@ const TeamInfo = async ({ id }: TeamInfoProps) => {
   return (
     <div className="flex flex-col items-center justify-center">
       <h1 className="mb-6 text-3xl font-bold">Team {team.name}</h1>
-      <div className="grid grid-cols-1 justify-items-center md:grid-cols-2">
+      <div className="grid grid-cols-1 md:justify-items-center md:grid-cols-2">
         <div>
           <p className="mb-4 font-bold">Members</p>
           <ul className="flex flex-col gap-2">

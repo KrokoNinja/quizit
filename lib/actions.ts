@@ -60,7 +60,7 @@ export const login = async (
 export const logout = async () => {
   const session = await getSession();
   session.destroy();
-  redirect(`${process.env.ROOT_URL}/login`);
+  redirect(`/login`);
 };
 
 export const signup = async (
