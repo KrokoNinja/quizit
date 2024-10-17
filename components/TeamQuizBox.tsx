@@ -21,7 +21,7 @@ const TeamQuizBox = ({teamId} : TeamQuizBoxProps) => {
       setCourse(savedCourse);
       setLoading(false);
     }
-  });
+  }, []);
 
   if (!course) {
     return <p>Loading...</p>;

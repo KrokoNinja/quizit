@@ -94,7 +94,7 @@ const QuizBox = ({ courseId, isTeamQuiz, team }: QuizBoxProps) => {
         setChoices(shuffledChoices);
       }
     }
-  }, [questionNumber, questions]);
+  }, [questionNumber, questions, isTeamQuiz]);
 
   const checkAnswer = () => {
     let isAnswerCorrect = true;
