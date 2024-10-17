@@ -4,43 +4,30 @@ import React, { useEffect, useState } from 'react';
 import QuizBox from './QuizBox';
 import { useRouter } from 'next/navigation';
 
-const TeamQuizBox = () => {
+interface TeamQuizBoxProps {
+  teamId: string;
+}
+
+const TeamQuizBox = ({teamId} : TeamQuizBoxProps) => {
   const [course, setCourse] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isClient, setIsClient] = useState<boolean>(false);
   const router = useRouter(); // Router object should not cause issues if directly in effect
 
   useEffect(() => {
-    // Ensures the code runs only on the client side
-    if (typeof window !== 'undefined') {
-      const storedCourse = localStorage.getItem('course');
-
-      if (storedCourse) {
-        setCourse(storedCourse); // Course found, set the course
-      } else {
-        setCourse(null); // No course found, set to null
-      }
-      setLoading(false); // Done loading after localStorage access
+    setIsClient(true);
+    const savedCourse = localStorage.getItem('course');
+    if (savedCourse) {
+      setCourse(savedCourse);
+      setLoading(false);
     }
-  }, []); // Empty array ensures it only runs once on mount
+  });
 
-  useEffect(() => {
-    // Redirect to 404 only if not loading and course is null
-    if (!loading && course === null) {
-      router.push('/404');
-    }
-  }, [loading, course, router]); // Ensure dependency size and order is always the same
-
-  // Show loading spinner/text while checking localStorage
-  if (loading) {
+  if (!course) {
     return <p>Loading...</p>;
   }
 
-  // Once the course is available, render the QuizBox
-  if (course) {
-    return <QuizBox courseId={course} isTeamQuiz={true} />;
-  }
-
-  return null; // Default return to prevent React errors
+  return <QuizBox courseId={course} isTeamQuiz={true} team={teamId} />;
 };
 
 export default TeamQuizBox;

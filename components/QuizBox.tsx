@@ -15,10 +15,10 @@ import { socket } from '../socket';
 interface QuizBoxProps {
   courseId: string;
   isTeamQuiz?: boolean;
-  params?: { id: string };
+  team?: string ;
 }
 
-const QuizBox = ({ courseId, isTeamQuiz, params }: QuizBoxProps) => {
+const QuizBox = ({ courseId, isTeamQuiz, team }: QuizBoxProps) => {
   const [open, setOpen] = useState<boolean>(false);
   const [points, setPoints] = useState(0);
   const [questionNumber, setQuestionNumber] = useState(0);
@@ -34,13 +34,17 @@ const QuizBox = ({ courseId, isTeamQuiz, params }: QuizBoxProps) => {
     if (isTeamQuiz) {
       socket.on('connect', () => {
         console.log(socket.id);
-        socket.emit('joinRoom', { roomId: params!.id });
-        socket.emit('getQuestions', {
-          roomId: params!.id,
-          questions: getQuizQuestions(courseId),
-        });
       });
-    } else {
+      socket.on('receiveQuestions', (data) => {
+        console.log(data)
+        setQuestions(data.questions.questions);
+      });
+      socket.emit('joinRoom', { roomId: team, quiz: true, courseId: courseId });
+      socket.on('receiveAnswer', (data) => {
+        console.log(data);
+        setSelected(data.answers);
+      });
+    } else if (!isTeamQuiz) {
       // fetch quiz questions
       const fetchQuestions = async () => {
         const questions = await getQuizQuestions(courseId);
@@ -48,7 +52,7 @@ const QuizBox = ({ courseId, isTeamQuiz, params }: QuizBoxProps) => {
       };
       fetchQuestions();
     }
-  }, [isTeamQuiz, params, courseId]);
+  }, [isTeamQuiz, team, courseId]);
 
   useEffect(() => {
     if (questionNumber < questions.length) {
@@ -82,9 +86,13 @@ const QuizBox = ({ courseId, isTeamQuiz, params }: QuizBoxProps) => {
         });
       }
 
-      const shuffledChoices = choiceData.sort(() => Math.random() - 0.5);
-
-      setChoices(shuffledChoices);
+      if (isTeamQuiz) {
+        setChoices(choiceData);
+      }
+      else {
+        const shuffledChoices = choiceData.sort(() => Math.random() - 0.5);
+        setChoices(shuffledChoices);
+      }
     }
   }, [questionNumber, questions]);
 
@@ -109,6 +117,12 @@ const QuizBox = ({ courseId, isTeamQuiz, params }: QuizBoxProps) => {
     const updatedSelected = selected.map((value, i) =>
       i === index ? !value : value,
     );
+    if (isTeamQuiz) {
+      socket.emit('sendAnswer', {
+        roomId: team,
+        answers: updatedSelected,
+      });
+    }
     setSelected(updatedSelected);
   };
 
@@ -126,6 +140,9 @@ const QuizBox = ({ courseId, isTeamQuiz, params }: QuizBoxProps) => {
   };
 
   const updatePoints = async (points: number) => {
+    if (isTeamQuiz) {
+      return;
+    }
     const response = await fetch('/api/add-points', {
       method: 'POST',
       headers: {

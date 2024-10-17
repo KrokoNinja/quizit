@@ -1,8 +1,10 @@
 import ChatBox from '@/components/ChatBox';
 import SinglePageWrapper from '@/components/SinglePageWrapper';
-import TeamQuizBox from '@/components/TeamQuizBox';
 import { getSession, getTeam } from '@/lib/actions';
+import dynamic from 'next/dynamic';
 import { redirect } from 'next/navigation';
+
+const TeamQuizBox = dynamic(() => import('@/components/TeamQuizBox'), {ssr: false});
 
 const page = async ({ params }: { params: { id: string } }) => {
   const session = await getSession();
@@ -14,7 +16,7 @@ const page = async ({ params }: { params: { id: string } }) => {
   return (
     <SinglePageWrapper>
       <h1>Quiz Page</h1>
-      <TeamQuizBox />
+      <TeamQuizBox teamId={params.id} />
       <ChatBox username={session.username} roomId={params.id} />
     </SinglePageWrapper>
   );
