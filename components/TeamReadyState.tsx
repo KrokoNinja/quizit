@@ -5,6 +5,8 @@ import { socket } from '../socket';
 import { Button } from './ui/button';
 import { redirect, useRouter } from 'next/navigation';
 import CourseSelect from './CourseSelect';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
 
 interface TeamReadyStateProps {
   team: {
@@ -16,6 +18,7 @@ interface TeamReadyStateProps {
 const TeamReadyState = ({ team, user }: TeamReadyStateProps) => {
   const [socketId, setSocketId] = useState<string | undefined>(undefined);
   const [course, setCourse] = useState<string | null>(null);
+  const [isReady, setIsReady] = useState<boolean>(false);
   const [usersReady, setUsersReady] = useState<{ [key: string]: boolean }>(
     team.users.reduce(
       (acc, user) => {
@@ -66,6 +69,7 @@ const TeamReadyState = ({ team, user }: TeamReadyStateProps) => {
 
   const setReady = () => {
     const newUsersReady = { ...usersReady, [user]: !usersReady[user] };
+    setIsReady(!isReady);
     socket.emit('setReady', {
       usersReady: newUsersReady,
       roomId: team.id,
@@ -96,25 +100,14 @@ const TeamReadyState = ({ team, user }: TeamReadyStateProps) => {
           </li>
         ))}
       </ul>
-      {/* Two buttons to get the onClick working on mobile */}
-      <div className='hidden md:block'>
-        <Button
-          disabled={!course}
-          className="cursor-pointer w-1/2"
-          onClick={() => setReady()}
-        >
-          {course ? 'Ready' : 'Select a course'}
-        </Button>
-      </div>
-      <div className='block md:hidden'>
-        <Button
-          disabled={!course}
-          className="cursor-pointer"
-          onTouchStart={() => setReady()}
-        >
-          {course ? 'Ready' : 'Select a course'}
-        </Button>
-      </div>
+      {course ?
+        <div className='flex items-center gap-2'>
+          <Input className='w-5' id="isReady" type="checkbox" checked={isReady} onChange={() => setReady()} />
+          <Label htmlFor='isReady'>Ready?</Label>
+        </div>
+      :
+          <p className='text-red-500'>Please select a course</p>
+      }
     </div>
   );
 };
