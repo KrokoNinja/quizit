@@ -37,7 +37,7 @@ const QuizBox = ({ courseId, isTeamQuiz, team }: QuizBoxProps) => {
       });
       socket.on('receiveQuestions', (data) => {
         console.log(data)
-        setQuestions(data.questions.questions);
+        setQuestions(data.questions);
       });
       socket.emit('joinRoom', { roomId: team, quiz: true, courseId: courseId });
       socket.on('receiveAnswer', (data) => {
@@ -55,7 +55,8 @@ const QuizBox = ({ courseId, isTeamQuiz, team }: QuizBoxProps) => {
   }, [isTeamQuiz, team, courseId]);
 
   useEffect(() => {
-    if (questionNumber < questions.length) {
+    //First look for questions to be set
+    if (questions && (questionNumber < questions.length)) {
       const currentQuestion = questions[questionNumber];
 
       const choiceData = [
@@ -166,7 +167,7 @@ const QuizBox = ({ courseId, isTeamQuiz, team }: QuizBoxProps) => {
   return (
     <div className="flex h-full flex-col">
       <p className="mb-6 text-xl font-bold">Points: {points}</p>
-      {questions.length > 0 ? (
+      {questions && questions.length > 0 ? (
         questionNumber < questions.length ? (
           <div className="flex w-full flex-col items-center justify-center md:h-[90%]">
             <h2 className="mb-2 text-3xl md:mb-4">
