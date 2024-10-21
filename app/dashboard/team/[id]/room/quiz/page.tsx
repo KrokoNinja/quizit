@@ -15,7 +15,7 @@ const page = async ({ params }: { params: { id: string } }) => {
 
   return (
     <SinglePageWrapper>
-      <h1>Quiz Page</h1>
+      <h1 className='hidden' aria-hidden="true" aria-label="Quiz Page">Quiz Page</h1>
       <TeamQuizBox teamId={params.id} />
       <ChatBox username={session.username} roomId={params.id} />
     </SinglePageWrapper>

@@ -7,7 +7,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { cn } from '@/lib/utils';
-import { Dialog } from './ui/dialog';
+import { Dialog, DialogClose } from './ui/dialog';
 import ReviewQuestionDialog from './ReviewQuestionDialog';
 import { useRouter } from 'next/navigation';
 import { socket } from '../socket';
@@ -198,7 +198,7 @@ const QuizBox = ({ courseId, isTeamQuiz, team }: QuizBoxProps) => {
                 </div>
               ))}
             </div>
-            <Dialog open={open} onOpenChange={() => setOpen(!open)}>
+            <Dialog open={open}>
               <ReviewQuestionDialog
                 question={questions[questionNumber]}
                 choices={choices}

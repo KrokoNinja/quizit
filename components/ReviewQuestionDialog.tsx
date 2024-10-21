@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog"
+import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog"
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
@@ -15,7 +15,7 @@ type ReviewQuestionProps = {
 const ReviewQuestionDialog = ({isCorrect, question, choices, nextQuestion}: ReviewQuestionProps) => {
 
   return (
-      <DialogContent className="w-full">
+      <DialogContent className="w-full" id="review-dialog">
         <DialogHeader>
           <DialogTitle>
             <p>{isCorrect ? "You are right!" : "You missed this one :("}</p>
