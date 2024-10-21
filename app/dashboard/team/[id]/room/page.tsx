@@ -1,4 +1,3 @@
-import ChatBox from '@/components/ChatBox';
 import SinglePageWrapper from '@/components/SinglePageWrapper';
 import TeamReadyState from '@/components/TeamReadyState';
 import { getSession, getTeam } from '@/lib/actions';
@@ -19,9 +18,6 @@ const page = async ({ params }: { params: { id: string } }) => {
   return (
     <SinglePageWrapper className="flex flex-col gap-10">
       <TeamReadyState team={team} user={session.username} />
-      {
-        //<ChatBox username={session.username} roomId={team.id} />
-      }
     </SinglePageWrapper>
   );
 };

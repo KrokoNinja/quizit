@@ -1,6 +1,7 @@
 import { createServer } from 'node:http';
 import next from 'next';
 import { Server } from 'socket.io';
+import { on } from 'node:events';
 
 
 const dev = process.env.NODE_ENV !== 'production';
@@ -9,7 +10,8 @@ const port = 3000;
 // when using middleware `hostname` and `port` must be provided below
 const app = next({ dev, hostname, port });
 const handler = app.getRequestHandler();
-const roomQuestions = {};
+let roomQuestions = {};
+let onlineUsers = {};
 
 app.prepare().then(() => {
   const httpServer = createServer(handler);
@@ -26,6 +28,8 @@ app.prepare().then(() => {
     socket.on('joinRoom', async (data) => {
       console.log(`User joined room ${data.roomId}`);
       socket.join(data.roomId);
+      onlineUsers[data.roomId] ? onlineUsers[data.roomId].push(data.user) : onlineUsers[data.roomId] = [data.user];
+      socket.to(data.roomId).emit('userJoined', onlineUsers[data.roomId]);
       console.log("Quiz:", data.quiz);
 
       if (data.quiz) {
@@ -49,10 +53,13 @@ app.prepare().then(() => {
       });
     });
 
-    socket.on('setCourse', (data) => {
+    socket.on('setCourse', async (data) => {
       socket
         .to(data.roomId)
         .emit('courseChange', { courseData: data.courseData });
+      const response = await fetch(`http://localhost:3000/api/get-quiz-questions?courseId=${data.courseData}`);
+      const questions = await response.json();
+      roomQuestions[data.roomId] = questions;
     });
 
     socket.on('sendAnswer', (data) => {

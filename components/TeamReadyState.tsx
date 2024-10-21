@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { socket } from '../socket';
-import { Button } from './ui/button';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import CourseSelect from './CourseSelect';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
@@ -18,6 +17,7 @@ interface TeamReadyStateProps {
 const TeamReadyState = ({ team, user }: TeamReadyStateProps) => {
   const [socketId, setSocketId] = useState<string | undefined>(undefined);
   const [course, setCourse] = useState<string | null>(null);
+  const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
   const [isReady, setIsReady] = useState<boolean>(false);
   const [usersReady, setUsersReady] = useState<{ [key: string]: boolean }>(
     team.users.reduce(
@@ -35,7 +35,11 @@ const TeamReadyState = ({ team, user }: TeamReadyStateProps) => {
       console.log(socket.id);
       setSocketId(socket.id);
     });
-    socket.emit('joinRoom', { roomId: team.id });
+    socket.emit('joinRoom', { roomId: team.id, user: user });
+
+    socket.on('userJoined', data => {
+      setOnlineUsers(data);
+    })
 
     socket.on('someoneReady', (data) => {
       //if all users are ready, redirect to quiz page
@@ -57,6 +61,7 @@ const TeamReadyState = ({ team, user }: TeamReadyStateProps) => {
     });
 
     return () => {
+      socket.off('userJoined');
       socket.off('someoneReady');
       socket.off('courseChange');
       socket.off('connect');
@@ -96,7 +101,10 @@ const TeamReadyState = ({ team, user }: TeamReadyStateProps) => {
           <li
             key={user.username}
             className={`flex items-center gap-6 rounded px-4 py-2 ${usersReady[user.username] ? 'bg-green-300' : 'bg-slate-400'}`}>
-            {user.username}
+            {user.username}{' '}
+            {onlineUsers.includes(user.username) &&
+              <span className='w-2 h-2 bg-green-600 rounded-full'></span>
+            }
           </li>
         ))}
       </ul>
