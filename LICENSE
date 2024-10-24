@@ -1,0 +1,34 @@
+/* 
+MIT License
+ applies to:
+        - three.js by 2010-2024 three.js authors and Face Mesh Example by www.bannaflak.com - https://github.com/mrdoob/three.js/
+        - webpack by JS Foundation - https://github.com/webpack/
+        - jema.js by 2023 Tobias Buschor - https://github.com/nuxodin/jema.js
+        - JSON schema by 2022 JSON Schema Specification Authors - https://github.com/json-schema-org/
+        - lil-gui by 2019 George Michael Brower - https://github.com/georgealways/lil-gui
+
+FaceEx - A application for morphing a facemesh to express Action Units and based on them Emotions
+Author: Florian Lessig
+Name 2
+Name 3
+Name 4 
+2024
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
